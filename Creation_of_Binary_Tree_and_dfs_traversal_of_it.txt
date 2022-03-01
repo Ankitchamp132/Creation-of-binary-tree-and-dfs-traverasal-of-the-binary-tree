@@ -1,0 +1,68 @@
+// Online C++ compiler to run C++ program online
+#include <iostream>
+#include <stack>
+#include <vector>
+using namespace std;
+
+struct node{
+    int data;
+    struct node *left;
+    struct node *right;
+};
+
+struct node *create(){
+    struct node *head=NULL;
+    int x;
+    struct node *newnode;
+    newnode=(struct node*)malloc(sizeof(struct node));
+    printf("Enter data item or -1 to to exit\n");
+    scanf("%d",&x);
+    if(x==-1){
+        return 0;
+    }
+    if(head==NULL){
+        head=newnode;
+    }
+    newnode->data=x;
+    printf("Enter the left child\n");
+    newnode->left=create();
+    printf("Enter the right child\n");
+    newnode->right=create();
+    return head;
+}
+
+void dfs(struct node *root,int n){
+    vector<int>v;
+    stack<struct node *>st;
+    bool *visited=new bool[n];
+    for(int i=0;i<n;i++){
+        visited[i]=false;
+    }
+    st.push(root);
+    visited[root->data]=true;
+    cout<<root->data<<endl;
+    while(!st.empty()){
+        struct node *val=st.top();
+        if(val->left!=NULL && visited[val->left->data]==false){
+            st.push(val->left);
+            visited[val->left->data]=true;
+            cout<<val->left->data<<endl;
+        }
+        else if(val->right!=NULL && visited[val->right->data]==false){
+            st.push(val->right);
+            visited[val->right->data]=true;
+            cout<<val->right->data<<endl;
+        }
+        else{
+            st.pop();
+        }
+    }
+}
+
+int main() {
+    vector<int>v;
+    struct node *ptr=create();
+    dfs(ptr,3);
+    
+    return 0;
+}
